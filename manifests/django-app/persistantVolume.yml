@@ -1,0 +1,16 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: notes-app-pv
+  namespace: django-app
+  labels:
+    app: notes-app
+spec:
+  storageClassName: local-storage
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /home/ubuntu/k8s-practice/manifests/django-app/volume  # Add the path where the volume will be mounted on the host
+
