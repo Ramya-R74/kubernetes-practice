@@ -1,1 +1,64 @@
-ihgshAGS
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-deployment
+  labels:
+    app: apache
+spec:
+  replicas: 2 # Number of Apache pods
+  selector:
+    matchLabels:
+      app: apache
+  template:
+    metadata:
+      labels:
+        app: apache
+    spec:
+      containers:
+      - name: apache
+        image: httpd:latest # Official Apache HTTP Server image
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: html-content
+          mountPath: /home/ubuntu/kubernetes-practice/manifests/django-app/htdocs # Mount custom HTML content here
+      volumes:
+      - name: html-content
+        configMap:
+          name: apache-html-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apache-html-config
+  labels:
+    app: apache
+  namespace: default
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Apache Deployment</title>
+    </head>
+    <body>
+        <h1>Welcome to the Apache Server!</h1>
+        <p>This is served from a Kubernetes pod.</p>
+    </body>
+    </html>
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-service
+  labels:
+    app: apache
+spec:
+  selector:
+    app: apache
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: NodePort
+

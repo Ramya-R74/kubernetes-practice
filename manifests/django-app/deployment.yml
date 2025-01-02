@@ -15,16 +15,10 @@ spec:
       labels:
         app: notes-app
     spec:
-      volumes:
-        - name: notes-app-storage
-          persistentVolumeClaim:      # Corrected from "persistantVolumeClaim"
-            claimName: notes-app-pvc  # Corrected from "Claimname"
       containers:
         - name: django-notes-app
           image: trainwithshubham/notes-app-k8s:latest
           ports:
             - containerPort: 8000
-             #volumeMounts:
-              #- name: notes-app-storage
-              #mountPath: app/backend  # Removed unnecessary quotes
+          
 
