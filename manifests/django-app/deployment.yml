@@ -20,5 +20,9 @@ spec:
           image: trainwithshubham/notes-app-k8s:latest
           ports:
             - containerPort: 8000
-          
+          resources:
+            requests:
+              cpu: 50m
+            limits:
+              cpu: 100m
 
